@@ -1,8 +1,8 @@
 :root{
     --primary-color: #FCDEC0;
     --secondary-color: #E5B299;
-    --ternary-color: #B4846C;
-    --quaternary-color: #7D5A50;
+    --ternary-color: rgb(183, 125, 17);
+    --quaternary-color: rgb(60, 37, 20);
 
 
 }
@@ -27,6 +27,9 @@
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
+    font-family: aeonik;
+    color: var(--primary-color);
+
 }
 
 html,body{
@@ -34,9 +37,57 @@ html,body{
     width: 100%;
 }
 
-#main{
+.main{
     height: 100%;
     width: 100%;
     background-color: var(--quaternary-color);
 }
 
+nav{
+    position: fixed;
+    width: 100%;
+    height:60px;
+    background-color: var(--ternary-color);
+
+}
+
+section.allElems{
+    height:100%;
+    width: 100%;
+    padding:40px;
+    padding-top: 80px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap:40px;
+    } 
+ 
+.elem{
+    background-color: orange;
+    height: 400px;
+    width: 255px;
+    font-size: 30px;
+    border-radius: 30px; 
+    position: relative;
+    transition: all 0.2s ease-in-out;
+    overflow: hidden;
+}
+
+.elem img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    
+    border-radius: 30px; 
+}
+
+.elem h2{
+    position: absolute;
+    left: 5%;
+    top: 5%;
+    font-weight:500;
+}
+
+.elem:active{
+    transform: scale(0.97);
+}
