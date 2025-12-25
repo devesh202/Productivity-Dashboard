@@ -246,6 +246,10 @@ section.allElems{
     
 }
 
+.task button:active{
+    scale:0.96;
+}
+
 .mark-imp{
     display: flex;
     align-items: center;
