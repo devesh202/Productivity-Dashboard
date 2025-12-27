@@ -342,19 +342,29 @@ section.allElems{
 }
 
 .motivational-fullpage{
+        height: 100vh;
+overflow: hidden;
     display: block;
     position: relative;
 }
-
+.motivation-bg{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
 .motivational-fullpage .motivation-container{
     height:600px;
     width: 800px;
-    position: absolute;
-    top:50%;
-    left:50%;
-    transform: translate(-50%,-50%);
+    border-radius: 50px ;
+    position: relative;
+    
     
 }
+
+
 
 .motivational-fullpage .motivation-container::after{
     content: "";
@@ -365,7 +375,7 @@ section.allElems{
     width: 100%;
     background-color:var(--ternary-color);
     border-radius: 40px;
-    filter : blur(150px);
+    filter : blur(100px);
     z-index: 8;
     scale:1.15;
 }
@@ -373,7 +383,6 @@ section.allElems{
 .motivational-fullpage .motivation-container .motivation-wrapper{
     z-index: 10;
     position: absolute;
-
     width: 100%;
     background-color:gold;
     border-radius: 30px;
@@ -427,3 +436,4 @@ section.allElems{
     opacity: 0.8;
 
 }
+

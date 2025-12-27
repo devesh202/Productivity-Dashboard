@@ -116,3 +116,21 @@ dayPlannerInput.forEach((elem)=>{
 }
 
 dailyPlanner()
+
+
+
+function motivationalQuote(){
+    var motivationalQuote = document.querySelector(".motivation-2 p");
+var motivationalQuoteAuthor = document.querySelector(".motivation-3 h2");
+async function fetchQuote(){
+    let response = await fetch("https://dummyjson.com/quotes/random")
+    let data = await response.json()
+    motivationalQuote.innerText = data.quote
+    motivationalQuoteAuthor.innerText ='- '+ data.author
+    
+}
+
+fetchQuote()
+}
+
+motivationalQuote() 
