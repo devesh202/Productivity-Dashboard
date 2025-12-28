@@ -4,6 +4,8 @@
     --ternary-color: rgb(183, 125, 17);
     --quaternary-color: rgb(60, 37, 20);
     --red:red;
+    --green:rgb(6, 169, 6);
+    --blue:rgb(97, 97, 237);
 
 
 }
@@ -344,7 +346,7 @@ section.allElems{
 .motivational-fullpage{
         height: 100vh;
 overflow: hidden;
-    display: block;
+    display: hidden;
     position: relative;
 }
 .motivation-bg{
@@ -437,3 +439,53 @@ overflow: hidden;
 
 }
 
+.pomodoro-fullpage{
+    /* display: block; */
+    position: relative;
+}
+
+.pomodoro-fullpage h2{
+    font-size: 65px;
+}
+
+.pomodoro-fullpage .pomo-timer{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+    
+}
+
+.pomo-timer h1{
+    font-size: 160px;
+}
+.pomo-timer button{
+    background-color: var(--ternary-color);
+    border-radius: 10px;
+    border: none;
+    color: var(--quaternary-color);
+    font-size: 30px;
+    padding: 15px 40px;
+    margin: 10px;
+    cursor: pointer;
+    box-shadow: 7px 7px 0px rgba(0, 0, 0, 0.5);
+    transition: all 0.2s ease-in-out;
+    font-weight: 700;
+}   
+
+.pomo-timer button:active{
+    
+    box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.5);
+} 
+
+.pomodoro-fullpage .session {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    text-align: center;
+    font-size: 40px;
+    padding: 15px 30px;
+    background-color: var(--green);
+    border-radius: 5px;
+}  

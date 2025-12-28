@@ -78,59 +78,118 @@ function todoList() {
 
 todoList();
 
-
 function dailyPlanner() {
-    //to get time in hours create an array
-var hours = Array.from({length:17},(elem,idx)=>{
-        AMPM = idx < 6 ? "AM" : "PM"
-        return  `${6+idx}:00 ${AMPM} - ${7+idx}:00 ${AMPM}`
+  //to get time in hours create an array
+  var hours = Array.from({ length: 17 }, (elem, idx) => {
+    AMPM = idx < 6 ? "AM" : "PM";
+    return `${6 + idx}:00 ${AMPM} - ${7 + idx}:00 ${AMPM}`;
+  });
+  console.log(hours);
+  var dayPlanner = document.querySelector(".day-planner");
+  var dayPlanData = JSON.parse(localStorage.getItem("dayPlanData")) || {};
 
-})
-console.log(hours)
-var dayPlanner=document.querySelector(".day-planner")
-var dayPlanData= JSON.parse(localStorage.getItem('dayPlanData')) || {}
-
-
-var wholeDaySum=""
-hours.forEach((elem,idx)=>{
-    var savedData = dayPlanData[idx] || ""; 
-    wholeDaySum= wholeDaySum + ` <div class="day-planner-time">
+  var wholeDaySum = "";
+  hours.forEach((elem, idx) => {
+    var savedData = dayPlanData[idx] || "";
+    wholeDaySum =
+      wholeDaySum +
+      ` <div class="day-planner-time">
                     <p>${elem}</p>
                     <input type="text" id=${idx} placeholder="...", value="${savedData}">
-                </div>`
+                </div>`;
+  });
 
-})
+  dayPlanner.innerHTML = wholeDaySum;
+  var dayPlannerInput = document.querySelectorAll(".day-planner input");
 
-dayPlanner.innerHTML=wholeDaySum
-var dayPlannerInput=document.querySelectorAll('.day-planner input')
-
-
-
-dayPlannerInput.forEach((elem)=>{
-    elem.addEventListener('input',(e)=>{
-        dayPlanData[elem.id] = elem.value
-        console.log(dayPlanData)
-        localStorage.setItem('dayPlanData',JSON.stringify(dayPlanData));
-    })
-})
+  dayPlannerInput.forEach((elem) => {
+    elem.addEventListener("input", (e) => {
+      dayPlanData[elem.id] = elem.value;
+      console.log(dayPlanData);
+      localStorage.setItem("dayPlanData", JSON.stringify(dayPlanData));
+    });
+  });
 }
 
-dailyPlanner()
+dailyPlanner();
 
+function motivationalQuote() {
+  var motivationalQuote = document.querySelector(".motivation-2 p");
+  var motivationalQuoteAuthor = document.querySelector(".motivation-3 h2");
+  async function fetchQuote() {
+    let response = await fetch("https://dummyjson.com/quotes/random");
+    let data = await response.json();
+    motivationalQuote.innerText = data.quote;
+    motivationalQuoteAuthor.innerText = "- " + data.author;
+  }
 
+  fetchQuote();
+}
 
-function motivationalQuote(){
-    var motivationalQuote = document.querySelector(".motivation-2 p");
-var motivationalQuoteAuthor = document.querySelector(".motivation-3 h2");
-async function fetchQuote(){
-    let response = await fetch("https://dummyjson.com/quotes/random")
-    let data = await response.json()
-    motivationalQuote.innerText = data.quote
-    motivationalQuoteAuthor.innerText ='- '+ data.author
+motivationalQuote();
+
+let totalSeconds = 25 * 60;
+let timer = document.querySelector(".pomo-timer h1");
+var start = document.querySelector(".start-timer");
+var pause = document.querySelector(".pause-timer");
+var reset = document.querySelector(".reset-timer");
+let timerInterval = null;
+var isWorkSession = true;
+let session = document.querySelector(".session");
+function updateTimer() {
+  let minutes = Math.floor(totalSeconds / 60);
+  let seconds = totalSeconds % 60;
+  timer.innerText = `${String(minutes).padStart(2, "0")}: ${String(
+    seconds
+  ).padStart(2, "0")}`; //padStart(2,"0") will add 0 before the number if the number is less than 2 digits.  seconds}`
+}
+
+function startTimer() {
+  if (isWorkSession) {
     
-}
+    
+    timerInterval = setInterval(() => {
+      if (totalSeconds > 0) {
+        totalSeconds--;
+        updateTimer();
+      } else {
+        isWorkSession = false;
+        clearInterval(timerInterval);
+        timer.innerHTML = "05:00";
+         session.innerText = "Take a Break";
+    session.style.backgroundColor = "var(--blue)";
+    totalSeconds = 5 * 60;
+      }
+    }, 1000);
+  } else {
+   
+    
+    timerInterval = setInterval(() => {
+        
+      if (totalSeconds > 0) {
+        totalSeconds--;
+        updateTimer();
+      } else {
+        isWorkSession = true;
+        clearInterval(timerInterval);
+        timer.innerHTML = "25:00";
+        session.innerText = "Work Session";
+    session.style.backgroundColor = "var(--green)";
+    totalSeconds = 25 * 60;
 
-fetchQuote()
+      }
+    }, 1000);
+  }
 }
+start.addEventListener("click", startTimer);
 
-motivationalQuote() 
+function pauseTimer() {
+  clearInterval(timerInterval);
+}
+pause.addEventListener("click", pauseTimer);
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  totalSeconds = 25 * 60;
+}
+reset.addEventListener("click", resetTimer);
