@@ -128,7 +128,8 @@ function motivationalQuote() {
 
 motivationalQuote();
 
-let totalSeconds = 25 * 60;
+function pomodoroTimer() {
+    let totalSeconds = 25 * 60;
 let timer = document.querySelector(".pomo-timer h1");
 var start = document.querySelector(".start-timer");
 var pause = document.querySelector(".pause-timer");
@@ -193,3 +194,12 @@ function resetTimer() {
   totalSeconds = 25 * 60;
 }
 reset.addEventListener("click", resetTimer);
+}
+
+pomodoroTimer();
+
+async function weatherAPICall() {
+    var res= await fetch("https://api.openweathermap.org/data/2.5/weather?q=delhi&appid=4c0d1b3f8c0d4f6d0c6d1b3f8c0d4f6d")
+    var data = await res.json();
+    console.log(data);
+}
