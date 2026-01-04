@@ -31,8 +31,6 @@
     padding: 0px;
     box-sizing: border-box;
     font-family: aeonik;
-    color: var(--primary-color);
-
 }
 
 html,body{
@@ -46,13 +44,6 @@ html,body{
     background-color: var(--quaternary-color);
 }
 
-nav{
-    position: fixed;
-    width: 100%;
-    height:60px;
-    background-color: var(--ternary-color);
-
-}
 
 section.allElems{
     height:100%;
@@ -70,12 +61,67 @@ section.allElems{
     gap:40px;
 }
 
-.allElems .header{
+.allElems header{
     width: 100%;
-    height: 500px;
-    background-color: var(--secondary-color);
-    border-radius: 30px;
+    height: 400px;
+    background-image: url(./sky.avif);
+    background-size: cover;
+    background-position: center;
+    border-radius: 30px; 
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 60px;
+    color: white;
+    
+    
 }
+
+header .header1 h2{
+    font-size: 50px;
+    font-weight: 500;
+    
+}
+header .header1 h1{
+    font-size: 50px;
+    margin-bottom: 45px;
+
+
+}
+
+
+header .header1 h4{
+    font-size: 40px;
+    font-weight: 500;
+
+}
+
+header .header2 h2{
+     font-size: 40px;
+    font-weight: 700;
+    
+
+}
+
+
+header .header2 h3{
+    font-size: 30px;
+    opacity: 0.8;
+    font-weight: 500;
+
+}
+
+header .header2 h4{
+    font-size: 35px;
+    font-weight: 700;
+    margin-bottom: 40px;
+
+}
+
+
+
+
 .elem{
     background-color: orange;
     height: 400px;
@@ -134,7 +180,7 @@ section.allElems{
 }
 
 .todo-list-fullpage{
-    display: block;
+    /* display: block; */
 }
     
 .todo-list-fullpage h2{
@@ -302,7 +348,7 @@ section.allElems{
 /* Daily Planner */
 
 .daily-planner-fullpage{
-    display: block;
+    /* display: block; */
 }
 
 .daily-planner-fullpage h2{

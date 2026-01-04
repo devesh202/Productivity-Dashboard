@@ -198,8 +198,40 @@ reset.addEventListener("click", resetTimer);
 
 pomodoroTimer();
 
+var data  = null;
+var currentTime = document.querySelector(".header1 h1");
+var DayDate = document.querySelector(".header1 h2");
+
 async function weatherAPICall() {
-    var res= await fetch("https://api.openweathermap.org/data/2.5/weather?q=delhi&appid=4c0d1b3f8c0d4f6d0c6d1b3f8c0d4f6d")
-    var data = await res.json();
-    console.log(data);
+    const APIKEY = '9d6e04f42c0a44e7854174145260101'
+    var res= await fetch("https://api.weatherapi.com/v1/current.json?key="+APIKEY+"&q=delhi");
+    data = await res.json();
+    
 }
+
+
+weatherAPICall();
+
+
+function timeDate(){
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var date = new Date();
+    var dayOfWeek = daysOfWeek[date.getDay()];
+    var hours = String(date.getHours()).padStart(2, '0');
+    var minutes = String(date.getMinutes()).padStart(2, '0'); //date.getMinutes();
+    var seconds = String(date.getSeconds()).padStart(2, '0'); // date.getSeconds();
+    var Todaydate = String(date.getDate()).padStart(2, '0');
+    var month = String(date.getMonth() + 1).padStart(2, '0');
+    var year = date.getFullYear();
+    DayDate.innerHTML = Todaydate + " " + months[month - 1] + "," + year;
+    if(hours>12){
+            currentTime.innerHTML = dayOfWeek + " " +(hours-12)+ ":" + minutes + ":" + seconds+ " PM";
+    }
+    else currentTime.innerHTML = dayOfWeek + " " + hours + ":" + minutes + ":" + seconds + " AM";
+    
+}
+setInterval(() => {
+    timeDate();
+    
+}, 1000);
