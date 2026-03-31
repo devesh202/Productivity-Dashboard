@@ -45,6 +45,7 @@ function todoList() {
     markCompletedBtn.forEach((btn) => {
       btn.addEventListener("click", () => {
         currTask.splice(btn.id, 1);
+        localStorage.setItem("currTask", JSON.stringify(currTask));
         renderTask();
       });
     });
@@ -146,6 +147,7 @@ function updateTimer() {
 }
 
 function startTimer() {
+  if (timerInterval) clearInterval(timerInterval);
   if (isWorkSession) {
     
     
@@ -198,15 +200,31 @@ reset.addEventListener("click", resetTimer);
 
 pomodoroTimer();
 
-var data  = null;
+function WeatherAndDate(){
+  var data  = null;
 var currentTime = document.querySelector(".header1 h1");
 var DayDate = document.querySelector(".header1 h2");
-
+var header2Temp = document.querySelector(".header2 h2");
+var header2Condition = document.querySelector(".header2 h4");
+var humidity = document.querySelector(".header2 .Humidity");
+var wind = document.querySelector(".header2 .wind");
+var precipitation = document.querySelector(".header2 .Precipitation");
 async function weatherAPICall() {
-    const APIKEY = '9d6e04f42c0a44e7854174145260101'
-    var res= await fetch("https://api.weatherapi.com/v1/current.json?key="+APIKEY+"&q=delhi");
-    data = await res.json();
-    
+    try {
+        const APIKEY = '9d6e04f42c0a44e7854174145260101'
+        var res= await fetch("https://api.weatherapi.com/v1/current.json?key="+APIKEY+"&q=mumbai");
+        if (!res.ok) throw new Error("Weather API failed");
+        data = await res.json();
+        header2Temp.innerText =  Math.round(data.current.temp_c) + "°C";
+        header2Condition.innerText = data.current.condition.text;
+        wind.innerText = "Wind: " + data.current.wind_kph + " km/h";
+        humidity.innerText = "Humidity: " + data.current.humidity + "%";
+        precipitation.innerText = "Precipitation: " + data.current.precip_mm + " mm";
+    } catch (err) {
+        console.error("Weather Data Error:", err);
+        header2Temp.innerText = "-- °C";
+        header2Condition.innerText = "Unavailable";
+    }
 }
 
 
@@ -235,3 +253,111 @@ setInterval(() => {
     timeDate();
     
 }, 1000);
+}
+
+WeatherAndDate();
+
+var themeToggle = document.getElementById("themeToggle");
+var themeIcon = document.getElementById("themeIcon");
+
+const currentTheme = localStorage.getItem("theme") || "dark";
+if (currentTheme === "light") {
+  document.body.classList.add("light-theme");
+  if(themeIcon) themeIcon.classList.replace("ri-sun-fill", "ri-moon-fill");
+}
+
+if(themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      document.body.classList.toggle("light-theme");
+      let theme = "dark";
+      if (document.body.classList.contains("light-theme")) {
+        theme = "light";
+        themeIcon.classList.replace("ri-sun-fill", "ri-moon-fill");
+      } else {
+        themeIcon.classList.replace("ri-moon-fill", "ri-sun-fill");
+      }
+      localStorage.setItem("theme", theme);
+    });
+}
+
+function initDailyGoals() {
+  const goalsForm = document.getElementById("goalsForm");
+  const goalInput = document.getElementById("goalInput");
+  const goalsList = document.getElementById("goalsList");
+  const goalsProgressFill = document.getElementById("goalsProgressFill");
+  const progressText = document.getElementById("progressText");
+
+  if (!goalsForm) return;
+
+  let goals = JSON.parse(localStorage.getItem("dailyGoals")) || [];
+
+  function saveGoals() {
+    localStorage.setItem("dailyGoals", JSON.stringify(goals));
+  }
+
+  function updateProgress() {
+    if (goals.length === 0) {
+      goalsProgressFill.style.width = "0%";
+      progressText.innerText = "No goals yet";
+      return;
+    }
+    const completed = goals.filter(g => g.completed).length;
+    const percentage = Math.round((completed / goals.length) * 100);
+    goalsProgressFill.style.width = `${percentage}%`;
+    progressText.innerText = `${percentage}% Completed`;
+    
+    if (percentage === 100) {
+        goalsProgressFill.style.background = "var(--green)";
+    } else {
+        goalsProgressFill.style.background = "var(--accent)";
+    }
+  }
+
+  function renderGoals() {
+    goalsList.innerHTML = "";
+    goals.forEach((goal, idx) => {
+      const item = document.createElement("div");
+      item.className = `daily-goal-item ${goal.completed ? "completed" : ""}`;
+      
+      item.innerHTML = `
+        <div class="goal-left">
+          <input type="checkbox" id="goal-${idx}" ${goal.completed ? "checked" : ""}>
+          <label for="goal-${idx}"><span>${goal.text}</span></label>
+        </div>
+        <button class="goal-delete" data-index="${idx}"><i class="ri-delete-bin-line"></i></button>
+      `;
+
+      const checkbox = item.querySelector("input[type='checkbox']");
+      checkbox.addEventListener("change", (e) => {
+        goals[idx].completed = e.target.checked;
+        saveGoals();
+        renderGoals();
+      });
+
+      const delBtn = item.querySelector(".goal-delete");
+      delBtn.addEventListener("click", () => {
+        goals.splice(idx, 1);
+        saveGoals();
+        renderGoals();
+      });
+
+      goalsList.appendChild(item);
+    });
+    updateProgress();
+  }
+
+  goalsForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const text = goalInput.value.trim();
+    if (text) {
+      goals.push({ text: text, completed: false });
+      goalInput.value = "";
+      saveGoals();
+      renderGoals();
+    }
+  });
+
+  renderGoals();
+}
+
+initDailyGoals();
